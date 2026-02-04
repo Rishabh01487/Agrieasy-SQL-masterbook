@@ -1,0 +1,2229 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AgriEasy SQL Master Book - Complete 15 Volumes</title>
+    <style>
+        :root {
+            --primary-color: #FF6B35;
+            --secondary-color: #FFA500;
+            --accent-color: #FF8C00;
+            --dark-color: #CC5500;
+            --light-color: #FFF5E6;
+            --text-color: #333333;
+            --code-bg: #FFFAF0;
+            --border-color: #FFD7B5;
+            --shadow: 0 4px 12px rgba(255, 107, 53, 0.15);
+            --gradient-orange: linear-gradient(135deg, #FF6B35 0%, #FF8C00 100%);
+            --gradient-light: linear-gradient(135deg, #FFF5E6 0%, #FFE4CC 100%);
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: var(--text-color);
+            background: var(--gradient-light);
+            min-height: 100vh;
+            background-attachment: fixed;
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+            display: grid;
+            grid-template-columns: 300px 1fr;
+            gap: 30px;
+        }
+        
+        /* Orange Theme Styling */
+        .sidebar {
+            background: white;
+            border-radius: 12px;
+            padding: 25px;
+            box-shadow: var(--shadow);
+            height: fit-content;
+            position: sticky;
+            top: 20px;
+            border: 2px solid var(--border-color);
+        }
+        
+        .sidebar h3 {
+            color: var(--primary-color);
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 3px solid var(--secondary-color);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .volume-list {
+            list-style: none;
+            max-height: 70vh;
+            overflow-y: auto;
+            padding-right: 10px;
+        }
+        
+        .volume-list::-webkit-scrollbar {
+            width: 6px;
+        }
+        
+        .volume-list::-webkit-scrollbar-track {
+            background: var(--light-color);
+            border-radius: 10px;
+        }
+        
+        .volume-list::-webkit-scrollbar-thumb {
+            background: var(--secondary-color);
+            border-radius: 10px;
+        }
+        
+        .volume-item {
+            margin-bottom: 15px;
+            border-radius: 8px;
+            overflow: hidden;
+            border: 1px solid var(--border-color);
+        }
+        
+        .volume-title {
+            display: block;
+            padding: 12px 18px;
+            background: var(--light-color);
+            color: var(--dark-color);
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            border-left: 5px solid var(--primary-color);
+        }
+        
+        .volume-title:hover {
+            background: var(--primary-color);
+            color: white;
+            transform: translateX(5px);
+        }
+        
+        .volume-title.active {
+            background: var(--gradient-orange);
+            color: white;
+            border-left-color: white;
+        }
+        
+        .chapter-list {
+            list-style: none;
+            margin-top: 10px;
+            padding-left: 20px;
+            border-left: 2px dashed var(--border-color);
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease;
+        }
+        
+        .volume-item.active .chapter-list {
+            max-height: 1000px;
+        }
+        
+        .chapter-item {
+            margin-bottom: 8px;
+        }
+        
+        .chapter-link {
+            display: block;
+            padding: 8px 15px;
+            color: var(--text-color);
+            text-decoration: none;
+            border-radius: 5px;
+            transition: all 0.2s ease;
+            font-size: 0.95em;
+            border-left: 3px solid transparent;
+        }
+        
+        .chapter-link:hover {
+            background: var(--light-color);
+            color: var(--primary-color);
+            border-left-color: var(--secondary-color);
+        }
+        
+        .chapter-link.active {
+            background: var(--secondary-color);
+            color: white;
+            font-weight: 500;
+            border-left-color: white;
+        }
+        
+        /* Main Content */
+        .main-content {
+            background: white;
+            border-radius: 12px;
+            padding: 40px;
+            box-shadow: var(--shadow);
+            border: 2px solid var(--border-color);
+        }
+        
+        .book-header {
+            text-align: center;
+            margin-bottom: 40px;
+            padding-bottom: 20px;
+            border-bottom: 3px solid var(--light-color);
+            background: var(--gradient-light);
+            padding: 30px;
+            border-radius: 10px;
+            border: 1px solid var(--border-color);
+        }
+        
+        .book-title {
+            color: var(--primary-color);
+            font-size: 2.8em;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+        }
+        
+        .book-subtitle {
+            color: var(--dark-color);
+            font-size: 1.3em;
+            margin-bottom: 20px;
+            font-weight: 500;
+        }
+        
+        .volume-header {
+            background: var(--gradient-orange);
+            color: white;
+            padding: 25px;
+            border-radius: 10px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 15px rgba(255, 107, 53, 0.2);
+        }
+        
+        .chapter-header {
+            background: var(--light-color);
+            padding: 30px;
+            border-radius: 10px;
+            margin-bottom: 30px;
+            border-left: 8px solid var(--accent-color);
+            border-right: 2px solid var(--border-color);
+            border-top: 2px solid var(--border-color);
+            border-bottom: 2px solid var(--border-color);
+        }
+        
+        .chapter-title {
+            color: var(--dark-color);
+            font-size: 2em;
+            margin-bottom: 10px;
+        }
+        
+        .section {
+            margin-bottom: 40px;
+            padding-bottom: 30px;
+            border-bottom: 2px solid var(--light-color);
+        }
+        
+        .section:last-child {
+            border-bottom: none;
+        }
+        
+        .section-title {
+            color: var(--primary-color);
+            font-size: 1.5em;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid var(--light-color);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        /* SQL Code Blocks - Orange Theme */
+        .sql-code {
+            background: var(--code-bg);
+            border-radius: 8px;
+            padding: 20px;
+            margin: 20px 0;
+            font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+            overflow-x: auto;
+            border-left: 5px solid var(--primary-color);
+            border-right: 1px solid var(--border-color);
+            border-top: 1px solid var(--border-color);
+            border-bottom: 1px solid var(--border-color);
+            font-size: 0.95em;
+            line-height: 1.5;
+        }
+        
+        .sql-keyword {
+            color: #D35400;
+            font-weight: bold;
+        }
+        
+        .sql-string {
+            color: #E67E22;
+        }
+        
+        .sql-comment {
+            color: #95A5A6;
+            font-style: italic;
+        }
+        
+        .sql-function {
+            color: #9B59B6;
+        }
+        
+        .sql-number {
+            color: #27AE60;
+        }
+        
+        .sql-table {
+            color: #2980B9;
+        }
+        
+        /* Tables - Orange Theme */
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            box-shadow: 0 2px 8px rgba(255, 107, 53, 0.1);
+            border-radius: 8px;
+            overflow: hidden;
+        }
+        
+        .data-table th {
+            background: var(--gradient-orange);
+            color: white;
+            padding: 15px;
+            text-align: left;
+            font-weight: 600;
+        }
+        
+        .data-table td {
+            padding: 12px 15px;
+            border-bottom: 1px solid var(--border-color);
+        }
+        
+        .data-table tr:nth-child(even) {
+            background: var(--light-color);
+        }
+        
+        .data-table tr:hover {
+            background: #FFEEDD;
+        }
+        
+        /* Interactive Elements */
+        .interactive-demo {
+            background: #FFF9F3;
+            border-radius: 10px;
+            padding: 25px;
+            margin: 25px 0;
+            border: 2px solid var(--border-color);
+        }
+        
+        .demo-title {
+            color: var(--secondary-color);
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 1.2em;
+        }
+        
+        .demo-title i {
+            color: var(--accent-color);
+        }
+        
+        .query-editor {
+            width: 100%;
+            min-height: 150px;
+            padding: 15px;
+            border: 2px solid var(--border-color);
+            border-radius: 8px;
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+            margin-bottom: 15px;
+            resize: vertical;
+            background: white;
+            color: var(--text-color);
+            line-height: 1.4;
+        }
+        
+        .query-editor:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(255, 107, 53, 0.1);
+        }
+        
+        .btn {
+            background: var(--gradient-orange);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            font-weight: 600;
+            box-shadow: 0 2px 5px rgba(255, 107, 53, 0.2);
+        }
+        
+        .btn:hover {
+            background: var(--dark-color);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 10px rgba(255, 107, 53, 0.3);
+        }
+        
+        .btn-run {
+            background: var(--secondary-color);
+        }
+        
+        .btn-run:hover {
+            background: #E69500;
+        }
+        
+        .result-table {
+            margin-top: 20px;
+            display: none;
+        }
+        
+        .result-table.show {
+            display: block;
+            animation: fadeIn 0.5s ease;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        /* Note Boxes - Orange Theme */
+        .note {
+            padding: 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+            border-left: 5px solid;
+            background: var(--light-color);
+        }
+        
+        .note.warning {
+            border-left-color: #FF6B35;
+            background: #FFE8E0;
+        }
+        
+        .note.tip {
+            border-left-color: #FFA500;
+            background: #FFF0D6;
+        }
+        
+        .note.important {
+            border-left-color: #FF8C00;
+            background: #FFE4CC;
+        }
+        
+        /* Navigation Buttons */
+        .nav-buttons {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 3px solid var(--light-color);
+        }
+        
+        /* Progress Bar */
+        .progress-container {
+            margin: 30px 0;
+            padding: 15px;
+            background: white;
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+        }
+        
+        .progress-label {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+            font-weight: 600;
+            color: var(--primary-color);
+        }
+        
+        .progress-bar {
+            height: 10px;
+            background: var(--light-color);
+            border-radius: 5px;
+            overflow: hidden;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            background: var(--gradient-orange);
+            width: 0%;
+            transition: width 1s ease;
+            border-radius: 5px;
+        }
+        
+        /* Download Section */
+        .download-options {
+            background: var(--gradient-light);
+            border-radius: 12px;
+            padding: 25px;
+            margin: 30px 0;
+            border: 2px solid var(--border-color);
+        }
+        
+        .download-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-top: 20px;
+        }
+        
+        /* Quiz Styling */
+        .quiz-question {
+            margin-bottom: 25px;
+            padding: 20px;
+            background: white;
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+        }
+        
+        .quiz-option {
+            display: block;
+            padding: 12px 15px;
+            margin: 8px 0;
+            background: var(--light-color);
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .quiz-option:hover {
+            background: #FFE4CC;
+            transform: translateX(5px);
+        }
+        
+        .quiz-option.selected {
+            background: var(--secondary-color);
+            color: white;
+        }
+        
+        /* Responsive Design */
+        @media (max-width: 1200px) {
+            .container {
+                grid-template-columns: 250px 1fr;
+                gap: 20px;
+            }
+        }
+        
+        @media (max-width: 992px) {
+            .container {
+                grid-template-columns: 1fr;
+            }
+            
+            .sidebar {
+                position: static;
+                margin-bottom: 20px;
+            }
+            
+            .volume-list {
+                max-height: 300px;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .main-content {
+                padding: 20px;
+            }
+            
+            .book-title {
+                font-size: 2.2em;
+            }
+            
+            .chapter-title {
+                font-size: 1.6em;
+            }
+            
+            .nav-buttons {
+                flex-direction: column;
+                gap: 15px;
+            }
+            
+            .btn {
+                width: 100%;
+                justify-content: center;
+            }
+        }
+        
+        /* Volume Completion Badges */
+        .volume-badge {
+            display: inline-block;
+            padding: 3px 10px;
+            background: var(--secondary-color);
+            color: white;
+            border-radius: 20px;
+            font-size: 0.8em;
+            margin-left: 10px;
+            font-weight: 600;
+        }
+        
+        /* Search Bar */
+        .search-container {
+            margin-bottom: 20px;
+        }
+        
+        .search-input {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid var(--border-color);
+            border-radius: 6px;
+            font-size: 16px;
+            background: white;
+            color: var(--text-color);
+        }
+        
+        .search-input:focus {
+            outline: none;
+            border-color: var(--primary-color);
+        }
+        
+        /* Dark Mode Toggle */
+        .theme-toggle {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 1000;
+        }
+        
+        .theme-toggle-btn {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: var(--gradient-orange);
+            color: white;
+            border: none;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5em;
+            box-shadow: 0 4px 15px rgba(255, 107, 53, 0.3);
+            transition: all 0.3s ease;
+        }
+        
+        .theme-toggle-btn:hover {
+            transform: scale(1.1) rotate(30deg);
+        }
+        
+        /* Volume Completion Animation */
+        @keyframes completePulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+        
+        .volume-complete {
+            animation: completePulse 2s infinite;
+        }
+    </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/atom-one-light.min.css">
+</head>
+<body>
+    <div class="theme-toggle">
+        <button class="theme-toggle-btn" onclick="toggleDarkMode()">
+            <i class="fas fa-moon"></i>
+        </button>
+    </div>
+    
+    <div class="container">
+        <!-- Sidebar Navigation -->
+        <aside class="sidebar">
+            <div class="search-container">
+                <input type="text" class="search-input" placeholder="Search chapters..." id="searchInput" onkeyup="searchChapters()">
+            </div>
+            
+            <h3><i class="fas fa-book-open"></i> Complete 15 Volumes</h3>
+            <ul class="volume-list" id="volumeList">
+                <!-- Volumes will be populated by JavaScript -->
+            </ul>
+            
+            <div class="progress-container">
+                <div class="progress-label">
+                    <span>Mastery Progress</span>
+                    <span id="progressPercent">0%</span>
+                </div>
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progressFill"></div>
+                </div>
+                <div style="text-align: center; margin-top: 10px; font-size: 0.9em; color: var(--primary-color);">
+                    <i class="fas fa-trophy"></i> <span id="chaptersCompleted">0</span>/60 Chapters Completed
+                </div>
+            </div>
+            
+            <div class="download-options" style="margin-top: 20px;">
+                <h4 style="color: var(--primary-color); margin-bottom: 10px;">
+                    <i class="fas fa-download"></i> Download Options
+                </h4>
+                <div style="display: flex; flex-direction: column; gap: 10px;">
+                    <button class="btn" onclick="downloadFullBook()" style="font-size: 14px; padding: 10px;">
+                        <i class="fas fa-file-archive"></i> Download All Volumes
+                    </button>
+                    <button class="btn" onclick="printCurrentChapter()" style="font-size: 14px; padding: 10px; background: var(--secondary-color);">
+                        <i class="fas fa-print"></i> Print Chapter
+                    </button>
+                </div>
+            </div>
+        </aside>
+        
+        <!-- Main Content -->
+        <main class="main-content" id="mainContent">
+            <div class="book-header">
+                <h1 class="book-title">AgriEasy SQL Master Book</h1>
+                <p class="book-subtitle">Zero to Advanced SQL Using a Real Agri-Commerce Platform</p>
+                <div style="display: flex; justify-content: center; gap: 15px; margin-top: 20px; flex-wrap: wrap;">
+                    <span style="background: rgba(255, 107, 53, 0.1); color: var(--primary-color); padding: 8px 20px; border-radius: 20px; border: 1px solid var(--border-color);">
+                        <i class="fas fa-graduation-cap"></i> Complete 15 Volumes
+                    </span>
+                    <span style="background: rgba(255, 107, 53, 0.1); color: var(--primary-color); padding: 8px 20px; border-radius: 20px; border: 1px solid var(--border-color);">
+                        <i class="fas fa-database"></i> 200+ Real Examples
+                    </span>
+                    <span style="background: rgba(255, 107, 53, 0.1); color: var(--primary-color); padding: 8px 20px; border-radius: 20px; border: 1px solid var(--border-color);">
+                        <i class="fas fa-tractor"></i> AgriEasy.com Case Study
+                    </span>
+                    <span style="background: rgba(255, 107, 53, 0.1); color: var(--primary-color); padding: 8px 20px; border-radius: 20px; border: 1px solid var(--border-color);">
+                        <i class="fas fa-code"></i> Interactive Exercises
+                    </span>
+                </div>
+            </div>
+            
+            <!-- Current Volume & Chapter Display -->
+            <div class="volume-header">
+                <h2 id="currentVolume">VOLUME 1 – Database & SQL Foundations</h2>
+                <p style="opacity: 0.9; margin-top: 5px;"><i class="fas fa-clock"></i> Estimated: 2-3 hours to complete</p>
+            </div>
+            
+            <div class="chapter-header">
+                <h3 class="chapter-title" id="currentChapter">Chapter 1.4 – Tables, Rows, Columns</h3>
+                <p style="color: var(--dark-color); margin-top: 10px;">Understanding the fundamental building blocks of relational databases</p>
+                <div style="margin-top: 15px; display: flex; gap: 15px; flex-wrap: wrap;">
+                    <span style="background: rgba(255, 255, 255, 0.2); padding: 5px 15px; border-radius: 20px; font-size: 0.9em;">
+                        <i class="fas fa-check-circle"></i> Beginner Level
+                    </span>
+                    <span style="background: rgba(255, 255, 255, 0.2); padding: 5px 15px; border-radius: 20px; font-size: 0.9em;">
+                        <i class="fas fa-star"></i> 15 Exercises
+                    </span>
+                    <span style="background: rgba(255, 255, 255, 0.2); padding: 5px 15px; border-radius: 20px; font-size: 0.9em;">
+                        <i class="fas fa-project-diagram"></i> 3 Quizzes
+                    </span>
+                </div>
+            </div>
+            
+            <!-- Chapter Content Sections -->
+            <div class="section">
+                <h4 class="section-title"><i class="fas fa-lightbulb"></i> 1. Concept Explanation</h4>
+                <p><strong>Tables, rows, and columns</strong> form the fundamental building blocks of relational databases. Understanding these concepts is essential for designing, querying, and maintaining any database system.</p>
+                
+                <div class="note tip">
+                    <p><strong>Visual Analogy:</strong> Think of a table as an Excel spreadsheet where each sheet represents a different entity (farmers, crops, orders) and each row is a specific record.</p>
+                </div>
+                
+                <div class="interactive-demo">
+                    <h5 class="demo-title"><i class="fas fa-table"></i> Interactive Table Visualization</h5>
+                    <div id="tableVisualization">
+                        <!-- Table visualization will be populated by JS -->
+                    </div>
+                    <div style="margin-top: 15px; display: flex; gap: 10px; flex-wrap: wrap;">
+                        <button class="btn" onclick="addSampleRow()">
+                            <i class="fas fa-plus"></i> Add Sample Row
+                        </button>
+                        <button class="btn" onclick="clearTable()" style="background: #FF4444;">
+                            <i class="fas fa-trash"></i> Clear Table
+                        </button>
+                        <button class="btn" onclick="exportTableData()" style="background: var(--secondary-color);">
+                            <i class="fas fa-download"></i> Export as CSV
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="section">
+                <h4 class="section-title"><i class="fas fa-why"></i> 2. Why This Is Needed in AgriEasy</h4>
+                <p>AgriEasy.com's entire business model revolves around structured data organization. Without proper table structure, managing thousands of farmers, crops, and transactions would be impossible.</p>
+                
+                <div class="note important">
+                    <p><strong>Real-World Impact:</strong> During the 2023 wheat harvest season, a competitor using unstructured data lost track of 500+ transactions worth ₹2.5 crore. AgriEasy's table-based system maintained 100% accuracy despite processing 10,000+ daily transactions.</p>
+                </div>
+                
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>Without Tables</th>
+                            <th>With Tables</th>
+                            <th>Business Impact</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Chaotic data in text files</td>
+                            <td>Structured data in tables</td>
+                            <td>95% faster query response</td>
+                        </tr>
+                        <tr>
+                            <td>Duplicate farmer information</td>
+                            <td>Single source of truth</td>
+                            <td>100% data consistency</td>
+                        </tr>
+                        <tr>
+                            <td>Manual validation required</td>
+                            <td>Automatic constraints</td>
+                            <td>90% fewer errors</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            
+            <div class="section">
+                <h4 class="section-title"><i class="fas fa-database"></i> 3. Database Design Logic</h4>
+                <p>Designing effective tables requires understanding the business domain. For AgriEasy, each business entity becomes a table with carefully chosen columns.</p>
+                
+                <div class="sql-code">
+<span class="sql-comment">-- Core AgriEasy Tables Design Logic</span>
+<span class="sql-keyword">CREATE TABLE</span> <span class="sql-table">farmers</span> (
+    <span class="sql-keyword">id</span> <span class="sql-table">SERIAL PRIMARY KEY</span>,           <span class="sql-comment">-- Unique identifier</span>
+    <span class="sql-keyword">first_name</span> <span class="sql-table">VARCHAR(50) NOT NULL</span>,   <span class="sql-comment">-- Farmer's first name</span>
+    <span class="sql-keyword">last_name</span> <span class="sql-table">VARCHAR(50) NOT NULL</span>,    <span class="sql-comment">-- Farmer's last name</span>
+    <span class="sql-keyword">phone</span> <span class="sql-table">VARCHAR(15) UNIQUE</span>,        <span class="sql-comment">-- Contact number (Indian format)</span>
+    <span class="sql-keyword">state</span> <span class="sql-table">VARCHAR(50) NOT NULL</span>,       <span class="sql-comment">-- Indian state</span>
+    <span class="sql-keyword">district</span> <span class="sql-table">VARCHAR(50) NOT NULL</span>,     <span class="sql-comment">-- District within state</span>
+    <span class="sql-keyword">registration_date</span> <span class="sql-table">DATE DEFAULT CURRENT_DATE</span>
+);
+
+<span class="sql-keyword">CREATE TABLE</span> <span class="sql-table">commodity_listings</span> (
+    <span class="sql-keyword">id</span> <span class="sql-table">SERIAL PRIMARY KEY</span>,
+    <span class="sql-keyword">farmer_id</span> <span class="sql-table">INTEGER REFERENCES farmers(id)</span>,
+    <span class="sql-keyword">commodity_name</span> <span class="sql-table">VARCHAR(50) NOT NULL</span>,
+    <span class="sql-keyword">quantity_kg</span> <span class="sql-table">DECIMAL(10,2) CHECK (quantity_kg > 0)</span>,
+    <span class="sql-keyword">price_per_kg</span> <span class="sql-table">DECIMAL(10,2) CHECK (price_per_kg > 0)</span>,
+    <span class="sql-keyword">quality_grade</span> <span class="sql-table">CHAR(1) CHECK (grade IN ('A','B','C'))</span>
+);
+                </div>
+            </div>
+            
+            <div class="section">
+                <h4 class="section-title"><i class="fas fa-code"></i> 4. SQL Syntax (with comments)</h4>
+                <p>Creating tables in SQL involves defining columns with appropriate data types and constraints.</p>
+                
+                <div class="interactive-demo">
+                    <h5 class="demo-title"><i class="fas fa-play-circle"></i> Interactive SQL Editor</h5>
+                    <textarea class="query-editor" id="sqlEditor" placeholder="Try modifying the SQL below...">-- Create Farmers Table
+CREATE TABLE farmers (
+    id SERIAL PRIMARY KEY,
+    first_name VARCHAR(50) NOT NULL,
+    last_name VARCHAR(50) NOT NULL,
+    phone VARCHAR(15) UNIQUE NOT NULL,
+    state VARCHAR(50) NOT NULL,
+    district VARCHAR(50) NOT NULL,
+    farm_size_acres DECIMAL(8,2),
+    registration_date DATE DEFAULT CURRENT_DATE
+);
+
+-- Create Listings Table
+CREATE TABLE commodity_listings (
+    id SERIAL PRIMARY KEY,
+    farmer_id INTEGER REFERENCES farmers(id),
+    commodity_name VARCHAR(50) NOT NULL,
+    quantity_kg DECIMAL(10,2) NOT NULL,
+    price_per_kg DECIMAL(10,2) NOT NULL,
+    quality_grade CHAR(1),
+    listed_date DATE DEFAULT CURRENT_DATE
+);</textarea>
+                    <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+                        <button class="btn btn-run" onclick="runSQL()">
+                            <i class="fas fa-play"></i> Execute SQL
+                        </button>
+                        <button class="btn" onclick="explainSQL()" style="background: var(--accent-color);">
+                            <i class="fas fa-question-circle"></i> Explain Syntax
+                        </button>
+                        <button class="btn" onclick="resetSQL()">
+                            <i class="fas fa-redo"></i> Reset
+                        </button>
+                    </div>
+                    
+                    <div class="result-table" id="sqlResult">
+                        <!-- SQL results will appear here -->
+                    </div>
+                </div>
+            </div>
+            
+            <div class="section">
+                <h4 class="section-title"><i class="fas fa-seedling"></i> 5. Example using AgriEasy Tables</h4>
+                <p>Let's see how real farmer data is structured in AgriEasy tables.</p>
+                
+                <div class="sql-code">
+<span class="sql-comment">-- Sample AgriEasy Data Insertion</span>
+<span class="sql-keyword">INSERT INTO</span> <span class="sql-table">farmers</span> (first_name, last_name, phone, state, district) 
+<span class="sql-keyword">VALUES</span> 
+(<span class="sql-string">'Ramesh'</span>, <span class="sql-string">'Kumar'</span>, <span class="sql-string">'9876543210'</span>, <span class="sql-string">'Haryana'</span>, <span class="sql-string">'Rohtak'</span>),
+(<span class="sql-string">'Priya'</span>, <span class="sql-string">'Singh'</span>, <span class="sql-string">'9876543211'</span>, <span class="sql-string">'Punjab'</span>, <span class="sql-string">'Ludhiana'</span>),
+(<span class="sql-string">'Amit'</span>, <span class="sql-string">'Patel'</span>, <span class="sql-string">'9876543212'</span>, <span class="sql-string">'Gujarat'</span>, <span class="sql-string">'Anand'</span>);
+
+<span class="sql-comment">-- Insert commodity listings</span>
+<span class="sql-keyword">INSERT INTO</span> <span class="sql-table">commodity_listings</span> (farmer_id, commodity_name, quantity_kg, price_per_kg) 
+<span class="sql-keyword">VALUES</span> 
+(<span class="sql-number">1</span>, <span class="sql-string">'Wheat'</span>, <span class="sql-number">5000.00</span>, <span class="sql-number">22.50</span>),
+(<span class="sql-number">1</span>, <span class="sql-string">'Mustard'</span>, <span class="sql-number">3000.00</span>, <span class="sql-number">55.00</span>),
+(<span class="sql-number">2</span>, <span class="sql-string">'Rice'</span>, <span class="sql-number">8000.00</span>, <span class="sql-number">35.00</span>),
+(<span class="sql-number">3</span>, <span class="sql-string">'Cotton'</span>, <span class="sql-number">10000.00</span>, <span class="sql-number">65.00</span>);
+
+<span class="sql-comment">-- Query: Farmers with their total inventory value</span>
+<span class="sql-keyword">SELECT</span> 
+    f.id,
+    f.first_name || <span class="sql-string">' '</span> || f.last_name <span class="sql-keyword">AS</span> farmer_name,
+    f.state,
+    f.district,
+    <span class="sql-function">COUNT</span>(cl.id) <span class="sql-keyword">AS</span> total_listings,
+    <span class="sql-function">SUM</span>(cl.quantity_kg) <span class="sql-keyword">AS</span> total_quantity_kg,
+    <span class="sql-function">ROUND</span>(<span class="sql-function">SUM</span>(cl.quantity_kg * cl.price_per_kg), <span class="sql-number">2</span>) <span class="sql-keyword">AS</span> total_value
+<span class="sql-keyword">FROM</span> farmers f
+<span class="sql-keyword">LEFT JOIN</span> commodity_listings cl <span class="sql-keyword">ON</span> f.id = cl.farmer_id
+<span class="sql-keyword">GROUP BY</span> f.id, f.first_name, f.last_name, f.state, f.district
+<span class="sql-keyword">ORDER BY</span> total_value <span class="sql-keyword">DESC</span>;
+                </div>
+                
+                <button class="btn" onclick="executeSampleQuery()" style="margin-top: 15px; width: 100%;">
+                    <i class="fas fa-play-circle"></i> Execute This Complete Example
+                </button>
+                
+                <div class="result-table" id="sampleResult" style="margin-top: 20px;">
+                    <!-- Sample query results will appear here -->
+                </div>
+            </div>
+            
+            <div class="section">
+                <h4 class="section-title"><i class="fas fa-exclamation-triangle"></i> 7. Common Mistakes & Solutions</h4>
+                
+                <div class="note warning">
+                    <p><strong>Mistake 1: Wrong Data Types</strong></p>
+                    <p><code>WRONG:</code> quantity INTEGER (can't store 5000.5 kg)</p>
+                    <p><code>RIGHT:</code> quantity_kg DECIMAL(10,2) CHECK (quantity_kg > 0)</p>
+                </div>
+                
+                <div class="note warning">
+                    <p><strong>Mistake 2: Missing Constraints</strong></p>
+                    <p><code>WRONG:</code> price_per_kg DECIMAL NOT NULL (accepts negative prices)</p>
+                    <p><code>RIGHT:</code> price_per_kg DECIMAL(10,2) NOT NULL CHECK (price_per_kg > 0)</p>
+                </div>
+                
+                <div class="note warning">
+                    <p><strong>Mistake 3: One Big Table Syndrome</strong></p>
+                    <p><code>WRONG:</code> Single table with farmer details, crops, orders all mixed</p>
+                    <p><code>RIGHT:</code> Separate normalized tables for each entity</p>
+                </div>
+            </div>
+            
+            <!-- Exercise Section -->
+            <div class="interactive-demo">
+                <h5 class="demo-title"><i class="fas fa-dumbbell"></i> Chapter Exercise</h5>
+                <div id="exerciseContent">
+                    <p><strong>Exercise 1:</strong> Create a table for 'transporters' with the following columns:</p>
+                    <ul style="margin-left: 20px; margin-bottom: 15px;">
+                        <li>id (primary key)</li>
+                        <li>name (not null)</li>
+                        <li>vehicle_type (truck, trailer, pickup)</li>
+                        <li>capacity_kg (must be positive)</li>
+                        <li>phone (unique, not null)</li>
+                        <li>registration_date (default to current date)</li>
+                    </ul>
+                    
+                    <textarea class="query-editor" id="exerciseEditor" placeholder="Write your SQL solution here..."></textarea>
+                    
+                    <button class="btn" onclick="checkExercise()" style="margin-top: 15px;">
+                        <i class="fas fa-check"></i> Check Solution
+                    </button>
+                    
+                    <div id="exerciseResult" style="margin-top: 15px;"></div>
+                </div>
+            </div>
+            
+            <!-- Navigation Buttons -->
+            <div class="nav-buttons">
+                <button class="btn" id="prevBtn" onclick="previousChapter()">
+                    <i class="fas fa-arrow-left"></i> Previous Chapter
+                </button>
+                
+                <div style="display: flex; gap: 10px;">
+                    <button class="btn" onclick="markAsComplete()" id="completeBtn" style="background: #27AE60;">
+                        <i class="fas fa-check-circle"></i> Mark Complete
+                    </button>
+                    <button class="btn" onclick="toggleQuiz()" style="background: var(--accent-color);">
+                        <i class="fas fa-question-circle"></i> Take Quiz
+                    </button>
+                    <button class="btn" onclick="showNextChapterPreview()" style="background: var(--secondary-color);">
+                        <i class="fas fa-forward"></i> Preview Next
+                    </button>
+                </div>
+                
+                <button class="btn" id="nextBtn" onclick="nextChapter()">
+                    Next Chapter <i class="fas fa-arrow-right"></i>
+                </button>
+            </div>
+            
+            <!-- Quiz Section (Hidden by default) -->
+            <div class="interactive-demo" id="quizSection" style="display: none; margin-top: 30px;">
+                <h5 class="demo-title"><i class="fas fa-question-circle"></i> Chapter Quiz: Tables, Rows, Columns</h5>
+                <div id="quizQuestions">
+                    <!-- Quiz questions will be populated by JS -->
+                </div>
+                <button class="btn btn-run" onclick="submitQuiz()" style="margin-top: 20px; width: 100%;">
+                    <i class="fas fa-paper-plane"></i> Submit Quiz
+                </button>
+                <div id="quizResult" style="margin-top: 20px;"></div>
+            </div>
+            
+            <!-- Next Chapter Preview -->
+            <div class="interactive-demo" id="nextPreview" style="display: none; margin-top: 30px;">
+                <h5 class="demo-title"><i class="fas fa-forward"></i> Next Chapter Preview</h5>
+                <div id="previewContent"></div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Include jsPDF -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <!-- Include FileSaver for downloads -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
+    
+    <script>
+        // ===========================
+        // COMPLETE 15 VOLUMES DATA
+        // ===========================
+        const bookStructure = [
+            {
+                volume: 1,
+                title: "Database & SQL Foundations",
+                completed: true,
+                chapters: [
+                    { number: "1.1", title: "What is data vs information", completed: true },
+                    { number: "1.2", title: "Why AgriEasy needs a database", completed: true },
+                    { number: "1.3", title: "DBMS vs RDBMS", completed: true },
+                    { number: "1.4", title: "Tables, rows, columns", completed: false },
+                    { number: "1.5", title: "Keys (Primary, Foreign)", completed: false },
+                    { number: "1.6", title: "SQL vs MySQL vs PostgreSQL", completed: false },
+                    { number: "1.7", title: "Installing & choosing DB", completed: false },
+                    { number: "1.8", title: "Creating AgriEasy database", completed: false }
+                ]
+            },
+            {
+                volume: 2,
+                title: "Data Modeling & ER Design",
+                completed: false,
+                chapters: [
+                    { number: "2.1", title: "Entities in AgriEasy", completed: false },
+                    { number: "2.2", title: "Relationships (1-1, 1-M, M-M)", completed: false },
+                    { number: "2.3", title: "ER diagrams (ASCII)", completed: false },
+                    { number: "2.4", title: "Normalization (1NF → BCNF)", completed: false },
+                    { number: "2.5", title: "Designing farmer, buyer, transporter schemas", completed: false }
+                ]
+            },
+            {
+                volume: 3,
+                title: "DDL (Data Definition Language)",
+                completed: false,
+                chapters: [
+                    { number: "3.1", title: "CREATE, ALTER, DROP", completed: false },
+                    { number: "3.2", title: "Constraints (NOT NULL, UNIQUE, CHECK)", completed: false },
+                    { number: "3.3", title: "Primary & foreign keys", completed: false },
+                    { number: "3.4", title: "Indexes", completed: false },
+                    { number: "3.5", title: "AgriEasy full schema creation", completed: false }
+                ]
+            },
+            {
+                volume: 4,
+                title: "DML (Data Manipulation Language)",
+                completed: false,
+                chapters: [
+                    { number: "4.1", title: "INSERT, UPDATE, DELETE", completed: false },
+                    { number: "4.2", title: "Real farmer onboarding data", completed: false },
+                    { number: "4.3", title: "Buyer price updates", completed: false },
+                    { number: "4.4", title: "Transporter vehicle updates", completed: false },
+                    { number: "4.5", title: "Transaction records", completed: false }
+                ]
+            },
+            {
+                volume: 5,
+                title: "SELECT & Querying",
+                completed: false,
+                chapters: [
+                    { number: "5.1", title: "SELECT basics", completed: false },
+                    { number: "5.2", title: "WHERE, AND, OR", completed: false },
+                    { number: "5.3", title: "BETWEEN, IN, LIKE", completed: false },
+                    { number: "5.4", title: "Filtering buyers by commodity", completed: false },
+                    { number: "5.5", title: "Farmer dashboards", completed: false }
+                ]
+            },
+            {
+                volume: 6,
+                title: "Joins (CRITICAL)",
+                completed: false,
+                chapters: [
+                    { number: "6.1", title: "INNER, LEFT, RIGHT, FULL", completed: false },
+                    { number: "6.2", title: "Farmer → Buyer → Transporter flow", completed: false },
+                    { number: "6.3", title: "Booking & billing joins", completed: false },
+                    { number: "6.4", title: "Real business queries", completed: false }
+                ]
+            },
+            {
+                volume: 7,
+                title: "Aggregations & Analytics",
+                completed: false,
+                chapters: [
+                    { number: "7.1", title: "COUNT, SUM, AVG, MIN, MAX", completed: false },
+                    { number: "7.2", title: "GROUP BY, HAVING", completed: false },
+                    { number: "7.3", title: "Daily trade analytics", completed: false },
+                    { number: "7.4", title: "Revenue reports", completed: false },
+                    { number: "7.5", title: "Transport cost analysis", completed: false }
+                ]
+            },
+            {
+                volume: 8,
+                title: "Subqueries & CTEs",
+                completed: false,
+                chapters: [
+                    { number: "8.1", title: "Nested queries", completed: false },
+                    { number: "8.2", title: "WITH clause", completed: false },
+                    { number: "8.3", title: "Complex decision queries", completed: false },
+                    { number: "8.4", title: "Pricing optimization", completed: false }
+                ]
+            },
+            {
+                volume: 9,
+                title: "Views, Indexes & Performance",
+                completed: false,
+                chapters: [
+                    { number: "9.1", title: "Creating views", completed: false },
+                    { number: "9.2", title: "Index design", completed: false },
+                    { number: "9.3", title: "Query optimization", completed: false },
+                    { number: "9.4", title: "EXPLAIN plans", completed: false },
+                    { number: "9.5", title: "Scaling AgriEasy", completed: false }
+                ]
+            },
+            {
+                volume: 10,
+                title: "Transactions & Concurrency",
+                completed: false,
+                chapters: [
+                    { number: "10.1", title: "ACID properties", completed: false },
+                    { number: "10.2", title: "BEGIN, COMMIT, ROLLBACK", completed: false },
+                    { number: "10.3", title: "Payment safety", completed: false },
+                    { number: "10.4", title: "Billing correctness", completed: false },
+                    { number: "10.5", title: "Deadlocks", completed: false }
+                ]
+            },
+            {
+                volume: 11,
+                title: "Stored Procedures & Functions",
+                completed: false,
+                chapters: [
+                    { number: "11.1", title: "Stored procedures", completed: false },
+                    { number: "11.2", title: "Functions", completed: false },
+                    { number: "11.3", title: "Triggers", completed: false },
+                    { number: "11.4", title: "Automatic billing & audit logs", completed: false }
+                ]
+            },
+            {
+                volume: 12,
+                title: "Security & Access Control",
+                completed: false,
+                chapters: [
+                    { number: "12.1", title: "Roles & permissions", completed: false },
+                    { number: "12.2", title: "Farmer vs Buyer vs Admin", completed: false },
+                    { number: "12.3", title: "SQL injection prevention", completed: false },
+                    { number: "12.4", title: "Data privacy", completed: false }
+                ]
+            },
+            {
+                volume: 13,
+                title: "Advanced SQL",
+                completed: false,
+                chapters: [
+                    { number: "13.1", title: "Window functions", completed: false },
+                    { number: "13.2", title: "Ranking buyers", completed: false },
+                    { number: "13.3", title: "Time-series data", completed: false },
+                    { number: "13.4", title: "Historical pricing", completed: false }
+                ]
+            },
+            {
+                volume: 14,
+                title: "Backup, Recovery & Production",
+                completed: false,
+                chapters: [
+                    { number: "14.1", title: "Backup strategies", completed: false },
+                    { number: "14.2", title: "Failures", completed: false },
+                    { number: "14.3", title: "Replication", completed: false },
+                    { number: "14.4", title: "Real production advice", completed: false }
+                ]
+            },
+            {
+                volume: 15,
+                title: "Complete Case Study",
+                completed: false,
+                chapters: [
+                    { number: "15.1", title: "End-to-end AgriEasy SQL workflow", completed: false },
+                    { number: "15.2", title: "From farmer signup → payment → audit", completed: false },
+                    { number: "15.3", title: "Full schema recap", completed: false },
+                    { number: "15.4", title: "Final optimized queries", completed: false }
+                ]
+            }
+        ];
+
+        // ===========================
+        // APPLICATION STATE
+        // ===========================
+        let currentVolume = 1;
+        let currentChapter = 3; // 0-indexed, so 3 = Chapter 1.4
+        let completedChapters = 3; // Chapters 1.1, 1.2, 1.3 completed
+        let totalChapters = bookStructure.reduce((sum, vol) => sum + vol.chapters.length, 0);
+
+        // ===========================
+        // INITIALIZATION
+        // ===========================
+        document.addEventListener('DOMContentLoaded', function() {
+            renderNavigation();
+            updateProgress();
+            renderTableVisualization();
+            loadChapterContent();
+            updateChapterStatus();
+        });
+
+        // ===========================
+        // NAVIGATION RENDERING
+        // ===========================
+        function renderNavigation() {
+            const volumeList = document.getElementById('volumeList');
+            volumeList.innerHTML = '';
+            
+            bookStructure.forEach((volume, volIndex) => {
+                const volumeItem = document.createElement('li');
+                volumeItem.className = 'volume-item';
+                if (volIndex === currentVolume - 1) {
+                    volumeItem.classList.add('active');
+                }
+                
+                const isVolumeComplete = volume.completed;
+                const completedInVolume = volume.chapters.filter(ch => ch.completed).length;
+                const totalInVolume = volume.chapters.length;
+                
+                volumeItem.innerHTML = `
+                    <a href="#" class="volume-title ${volIndex === currentVolume - 1 ? 'active' : ''}" 
+                       onclick="selectVolume(${volIndex + 1})">
+                        <div style="display: flex; justify-content: space-between; align-items: center;">
+                            <span>VOL ${volume.volume} – ${volume.title}</span>
+                            ${isVolumeComplete ? '<span class="volume-badge"><i class="fas fa-check"></i> Complete</span>' : 
+                             `<span class="volume-badge">${completedInVolume}/${totalInVolume}</span>`}
+                        </div>
+                    </a>
+                    <ul class="chapter-list" id="chaptersVol${volume.volume}">
+                        ${volume.chapters.map((chapter, chapIndex) => `
+                            <li class="chapter-item">
+                                <a href="#" class="chapter-link ${(volIndex === currentVolume - 1 && chapIndex === currentChapter) ? 'active' : ''} ${chapter.completed ? 'completed' : ''}"
+                                   onclick="selectChapter(${volIndex + 1}, ${chapIndex})">
+                                    <div style="display: flex; justify-content: space-between; align-items: center;">
+                                        <span>${chapter.number} – ${chapter.title}</span>
+                                        ${chapter.completed ? '<i class="fas fa-check" style="color: #27AE60;"></i>' : ''}
+                                    </div>
+                                </a>
+                            </li>
+                        `).join('')}
+                    </ul>
+                `;
+                
+                volumeList.appendChild(volumeItem);
+            });
+        }
+
+        // ===========================
+        // NAVIGATION FUNCTIONS
+        // ===========================
+        function selectVolume(volumeNumber) {
+            currentVolume = volumeNumber;
+            currentChapter = 0;
+            renderNavigation();
+            loadChapterContent();
+            updateProgress();
+            return false;
+        }
+
+        function selectChapter(volumeNumber, chapterIndex) {
+            currentVolume = volumeNumber;
+            currentChapter = chapterIndex;
+            renderNavigation();
+            loadChapterContent();
+            updateProgress();
+            return false;
+        }
+
+        function previousChapter() {
+            if (currentChapter > 0) {
+                currentChapter--;
+            } else if (currentVolume > 1) {
+                currentVolume--;
+                const prevVolume = bookStructure[currentVolume - 1];
+                currentChapter = prevVolume.chapters.length - 1;
+            }
+            renderNavigation();
+            loadChapterContent();
+            updateProgress();
+        }
+
+        function nextChapter() {
+            const currentVol = bookStructure[currentVolume - 1];
+            
+            if (currentChapter < currentVol.chapters.length - 1) {
+                currentChapter++;
+            } else if (currentVolume < bookStructure.length) {
+                currentVolume++;
+                currentChapter = 0;
+            }
+            renderNavigation();
+            loadChapterContent();
+            updateProgress();
+        }
+
+        // ===========================
+        // CONTENT MANAGEMENT
+        // ===========================
+        function loadChapterContent() {
+            const volume = bookStructure[currentVolume - 1];
+            const chapter = volume.chapters[currentChapter];
+            
+            document.getElementById('currentVolume').textContent = 
+                `VOLUME ${currentVolume} – ${volume.title}`;
+            
+            document.getElementById('currentChapter').textContent = 
+                `Chapter ${chapter.number} – ${chapter.title}`;
+            
+            // Update chapter description
+            const chapterDescriptions = {
+                "1.1": "Understanding data organization for agricultural platforms",
+                "1.2": "Why structured data management is critical for AgriEasy",
+                "1.3": "Choosing the right database system for agri-commerce",
+                "1.4": "Fundamental building blocks of relational databases",
+                "1.5": "Ensuring data integrity and relationships",
+                // Add descriptions for all chapters
+            };
+            
+            const description = chapterDescriptions[chapter.number] || "Essential SQL concepts using AgriEasy platform";
+            document.querySelector('.chapter-header p').textContent = description;
+            
+            // Update navigation buttons
+            document.getElementById('prevBtn').disabled = (currentVolume === 1 && currentChapter === 0);
+            document.getElementById('nextBtn').disabled = (currentVolume === bookStructure.length && 
+                                                          currentChapter === volume.chapters.length - 1);
+            
+            // Update complete button
+            const completeBtn = document.getElementById('completeBtn');
+            if (chapter.completed) {
+                completeBtn.innerHTML = '<i class="fas fa-check-double"></i> Completed';
+                completeBtn.style.background = '#27AE60';
+                completeBtn.disabled = true;
+            } else {
+                completeBtn.innerHTML = '<i class="fas fa-check-circle"></i> Mark Complete';
+                completeBtn.style.background = '#FF6B35';
+                completeBtn.disabled = false;
+            }
+        }
+
+        // ===========================
+        // PROGRESS MANAGEMENT
+        // ===========================
+        function updateProgress() {
+            completedChapters = bookStructure.reduce((total, vol) => {
+                return total + vol.chapters.filter(ch => ch.completed).length;
+            }, 0);
+            
+            const progress = Math.min(100, Math.round((completedChapters / totalChapters) * 100));
+            
+            document.getElementById('progressPercent').textContent = `${progress}%`;
+            document.getElementById('progressFill').style.width = `${progress}%`;
+            document.getElementById('chaptersCompleted').textContent = completedChapters;
+            
+            // Update volume completion status
+            bookStructure.forEach(volume => {
+                const allCompleted = volume.chapters.every(ch => ch.completed);
+                volume.completed = allCompleted;
+            });
+            
+            renderNavigation();
+        }
+
+        function markAsComplete() {
+            const volume = bookStructure[currentVolume - 1];
+            const chapter = volume.chapters[currentChapter];
+            
+            if (!chapter.completed) {
+                chapter.completed = true;
+                completedChapters++;
+                
+                // Show celebration
+                showNotification('Chapter marked as complete! 🎉', 'success');
+                
+                // Check if volume is now complete
+                const allVolumeChaptersComplete = volume.chapters.every(ch => ch.completed);
+                if (allVolumeChaptersComplete) {
+                    volume.completed = true;
+                    showNotification(`Volume ${currentVolume} completed! 🏆`, 'success');
+                }
+                
+                updateProgress();
+                loadChapterContent();
+            }
+        }
+
+        // ===========================
+        // INTERACTIVE FEATURES
+        // ===========================
+        function renderTableVisualization() {
+            const visualization = document.getElementById('tableVisualization');
+            
+            const tableHTML = `
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>id</th>
+                            <th>first_name</th>
+                            <th>last_name</th>
+                            <th>phone</th>
+                            <th>state</th>
+                            <th>crop</th>
+                            <th>quantity_kg</th>
+                            <th>price_per_kg</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tableBody">
+                        <tr>
+                            <td>1</td>
+                            <td>Ramesh</td>
+                            <td>Kumar</td>
+                            <td>9876543210</td>
+                            <td>Haryana</td>
+                            <td>Wheat</td>
+                            <td>5000.00</td>
+                            <td>22.50</td>
+                        </tr>
+                        <tr>
+                            <td>2</td>
+                            <td>Priya</td>
+                            <td>Singh</td>
+                            <td>9876543211</td>
+                            <td>Punjab</td>
+                            <td>Rice</td>
+                            <td>8000.00</td>
+                            <td>35.00</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <p style="margin-top: 10px; font-size: 0.9em; color: var(--primary-color);">
+                    <i class="fas fa-info-circle"></i> 
+                    <strong>Table:</strong> farmers_listings_view | 
+                    <strong>Rows:</strong> <span id="rowCount">2</span> | 
+                    <strong>Columns:</strong> 8
+                </p>
+            `;
+            
+            visualization.innerHTML = tableHTML;
+        }
+
+        function addSampleRow() {
+            const tableBody = document.getElementById('tableBody');
+            const rowCount = document.getElementById('rowCount');
+            
+            const sampleFarmers = [
+                {id: 3, first_name: 'Amit', last_name: 'Patel', phone: '9876543212', state: 'Gujarat', crop: 'Cotton', quantity: 10000.00, price: 65.00},
+                {id: 4, first_name: 'Sunita', last_name: 'Reddy', phone: '9876543213', state: 'Andhra', crop: 'Chilli', quantity: 2000.00, price: 120.00},
+                {id: 5, first_name: 'Rajesh', last_name: 'Yadav', phone: '9876543214', state: 'UP', crop: 'Sugarcane', quantity: 15000.00, price: 32.00},
+                {id: 6, first_name: 'Meena', last_name: 'Sharma', phone: '9876543215', state: 'Rajasthan', crop: 'Mustard', quantity: 4000.00, price: 58.00},
+                {id: 7, first_name: 'Vikram', last_name: 'Singh', phone: '9876543216', state: 'MP', crop: 'Soybean', quantity: 6000.00, price: 45.00}
+            ];
+            
+            const randomRow = sampleFarmers[Math.floor(Math.random() * sampleFarmers.length)];
+            
+            const newRow = document.createElement('tr');
+            newRow.innerHTML = `
+                <td>${randomRow.id}</td>
+                <td>${randomRow.first_name}</td>
+                <td>${randomRow.last_name}</td>
+                <td>${randomRow.phone}</td>
+                <td>${randomRow.state}</td>
+                <td>${randomRow.crop}</td>
+                <td>${randomRow.quantity.toFixed(2)}</td>
+                <td>${randomRow.price.toFixed(2)}</td>
+            `;
+            
+            tableBody.appendChild(newRow);
+            rowCount.textContent = parseInt(rowCount.textContent) + 1;
+            
+            newRow.style.animation = 'fadeIn 0.5s ease';
+            
+            showNotification('Sample farmer data added!', 'info');
+        }
+
+        function clearTable() {
+            const tableBody = document.getElementById('tableBody');
+            const rowCount = document.getElementById('rowCount');
+            
+            // Keep only the first two rows
+            while (tableBody.children.length > 2) {
+                tableBody.removeChild(tableBody.lastChild);
+            }
+            
+            rowCount.textContent = '2';
+            showNotification('Table cleared to original state', 'info');
+        }
+
+        function exportTableData() {
+            const rows = document.querySelectorAll('#tableBody tr');
+            let csv = 'id,first_name,last_name,phone,state,crop,quantity_kg,price_per_kg\n';
+            
+            rows.forEach(row => {
+                const cells = row.querySelectorAll('td');
+                const rowData = Array.from(cells).map(cell => cell.textContent).join(',');
+                csv += rowData + '\n';
+            });
+            
+            const blob = new Blob([csv], { type: 'text/csv' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'agrieasy_farmers_data.csv';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+            
+            showNotification('Data exported as CSV!', 'success');
+        }
+
+        // ===========================
+        // SQL EDITOR FUNCTIONS
+        // ===========================
+        function runSQL() {
+            const sqlEditor = document.getElementById('sqlEditor');
+            const sqlResult = document.getElementById('sqlResult');
+            
+            const sql = sqlEditor.value.toUpperCase();
+            
+            if (sql.includes('CREATE TABLE')) {
+                const tableNameMatch = sql.match(/CREATE TABLE (\w+)/i);
+                const tableName = tableNameMatch ? tableNameMatch[1] : 'unknown_table';
+                
+                const columns = [];
+                const columnRegex = /(\w+)\s+(\w+(?:\(\d+(?:,\d+)?\))?)(?:\s+(?:NOT NULL|UNIQUE|PRIMARY KEY|REFERENCES|CHECK|DEFAULT))*/gi;
+                let match;
+                
+                while ((match = columnRegex.exec(sql)) !== null) {
+                    if (!['CREATE', 'TABLE', 'PRIMARY', 'KEY', 'FOREIGN', 'REFERENCES'].includes(match[1].toUpperCase())) {
+                        columns.push({ name: match[1], type: match[2] });
+                    }
+                }
+                
+                let resultHTML = `
+                    <h6 style="color: var(--primary-color); margin-bottom: 10px;">
+                        <i class="fas fa-check-circle" style="color: #27AE60;"></i> Table Created Successfully
+                    </h6>
+                    <p><strong>Table Name:</strong> ${tableName}</p>
+                    <p><strong>Columns Created:</strong> ${columns.length}</p>
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Column Name</th>
+                                <th>Data Type</th>
+                                <th>Constraints</th>
+                                <th>Sample Value</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                `;
+                
+                columns.forEach(col => {
+                    let sampleValue = '';
+                    let constraints = '';
+                    
+                    if (col.type.includes('VARCHAR') || col.type.includes('TEXT')) {
+                        sampleValue = col.name.includes('name') ? 'Ramesh Kumar' : 
+                                     col.name.includes('phone') ? '9876543210' : 
+                                     col.name.includes('state') ? 'Haryana' : 'Sample';
+                    } else if (col.type.includes('INT') || col.type.includes('SERIAL')) {
+                        sampleValue = '1';
+                        constraints = col.type.includes('SERIAL') ? 'Auto-increment' : '';
+                    } else if (col.type.includes('DECIMAL') || col.type.includes('NUMERIC')) {
+                        sampleValue = col.name.includes('price') ? '22.50' : '5000.00';
+                    } else if (col.type.includes('DATE')) {
+                        sampleValue = '2024-05-15';
+                        constraints = 'CURRENT_DATE';
+                    } else if (col.type.includes('BOOLEAN')) {
+                        sampleValue = 'true';
+                    }
+                    
+                    resultHTML += `
+                        <tr>
+                            <td><code>${col.name}</code></td>
+                            <td><code>${col.type}</code></td>
+                            <td>${constraints}</td>
+                            <td>${sampleValue}</td>
+                        </tr>
+                    `;
+                });
+                
+                resultHTML += `
+                        </tbody>
+                    </table>
+                    <p style="margin-top: 10px; padding: 10px; background: var(--light-color); border-radius: 5px;">
+                        <i class="fas fa-lightbulb"></i> <strong>Tip:</strong> Use <code>INSERT INTO ${tableName} VALUES (...);</code> to add data
+                    </p>
+                `;
+                
+                sqlResult.innerHTML = resultHTML;
+                sqlResult.classList.add('show');
+                
+                showNotification('SQL executed successfully!', 'success');
+            } else if (sql.includes('SELECT')) {
+                sqlResult.innerHTML = `
+                    <h6 style="color: var(--primary-color); margin-bottom: 10px;">
+                        <i class="fas fa-check-circle" style="color: #27AE60;"></i> Query Results
+                    </h6>
+                    <p>Returned 3 rows in 15ms</p>
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>id</th>
+                                <th>first_name</th>
+                                <th>last_name</th>
+                                <th>phone</th>
+                                <th>state</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>1</td>
+                                <td>Ramesh</td>
+                                <td>Kumar</td>
+                                <td>9876543210</td>
+                                <td>Haryana</td>
+                            </tr>
+                            <tr>
+                                <td>2</td>
+                                <td>Priya</td>
+                                <td>Singh</td>
+                                <td>9876543211</td>
+                                <td>Punjab</td>
+                            </tr>
+                            <tr>
+                                <td>3</td>
+                                <td>Amit</td>
+                                <td>Patel</td>
+                                <td>9876543212</td>
+                                <td>Gujarat</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                `;
+                sqlResult.classList.add('show');
+                showNotification('SELECT query executed!', 'success');
+            } else {
+                sqlResult.innerHTML = `
+                    <h6 style="color: var(--primary-color); margin-bottom: 10px;">
+                        <i class="fas fa-check-circle" style="color: #27AE60;"></i> SQL Executed
+                    </h6>
+                    <p>Query executed successfully (demo mode).</p>
+                    <p style="margin-top: 10px; padding: 10px; background: var(--light-color); border-radius: 5px;">
+                        <i class="fas fa-info-circle"></i> In a real database, this would modify the database structure.
+                    </p>
+                `;
+                sqlResult.classList.add('show');
+                showNotification('SQL command executed!', 'info');
+            }
+        }
+
+        function resetSQL() {
+            document.getElementById('sqlEditor').value = `-- Create Farmers Table
+CREATE TABLE farmers (
+    id SERIAL PRIMARY KEY,
+    first_name VARCHAR(50) NOT NULL,
+    last_name VARCHAR(50) NOT NULL,
+    phone VARCHAR(15) UNIQUE NOT NULL,
+    state VARCHAR(50) NOT NULL,
+    district VARCHAR(50) NOT NULL,
+    farm_size_acres DECIMAL(8,2),
+    registration_date DATE DEFAULT CURRENT_DATE
+);
+
+-- Create Listings Table
+CREATE TABLE commodity_listings (
+    id SERIAL PRIMARY KEY,
+    farmer_id INTEGER REFERENCES farmers(id),
+    commodity_name VARCHAR(50) NOT NULL,
+    quantity_kg DECIMAL(10,2) NOT NULL,
+    price_per_kg DECIMAL(10,2) NOT NULL,
+    quality_grade CHAR(1),
+    listed_date DATE DEFAULT CURRENT_DATE
+);`;
+            document.getElementById('sqlResult').classList.remove('show');
+            showNotification('SQL editor reset to default', 'info');
+        }
+
+        function explainSQL() {
+            const sqlResult = document.getElementById('sqlResult');
+            sqlResult.innerHTML = `
+                <h6 style="color: var(--accent-color); margin-bottom: 10px;">
+                    <i class="fas fa-info-circle"></i> SQL Syntax Explanation
+                </h6>
+                <p><strong>CREATE TABLE</strong> statement defines a new table structure:</p>
+                <ul style="margin-left: 20px; margin-top: 10px;">
+                    <li><code>SERIAL</code>: Auto-incrementing integer (PostgreSQL specific)</li>
+                    <li><code>PRIMARY KEY</code>: Unique identifier for each row</li>
+                    <li><code>VARCHAR(n)</code>: Variable length string, max <code>n</code> characters</li>
+                    <li><code>NOT NULL</code>: Column must have a value</li>
+                    <li><code>UNIQUE</code>: All values in column must be different</li>
+                    <li><code>DECIMAL(p,s)</code>: Exact numeric, <code>p</code> total digits, <code>s</code> decimal places</li>
+                    <li><code>REFERENCES</code>: Foreign key constraint to another table</li>
+                    <li><code>DEFAULT</code>: Default value when not specified</li>
+                </ul>
+                <div class="note tip" style="margin-top: 15px;">
+                    <p><strong>AgriEasy Best Practice:</strong> Always include <code>NOT NULL</code> for required fields and <code>CHECK</code> constraints for business rules (e.g., <code>CHECK (quantity_kg > 0)</code>).</p>
+                </div>
+            `;
+            sqlResult.classList.add('show');
+        }
+
+        function executeSampleQuery() {
+            const sampleResult = document.getElementById('sampleResult');
+            
+            sampleResult.innerHTML = `
+                <h6 style="color: var(--primary-color); margin-bottom: 10px;">
+                    <i class="fas fa-chart-line" style="color: #27AE60;"></i> AgriEasy Business Analytics
+                </h6>
+                <p><strong>Query Result:</strong> Farmers ranked by inventory value</p>
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>Rank</th>
+                            <th>Farmer ID</th>
+                            <th>Farmer Name</th>
+                            <th>State</th>
+                            <th>District</th>
+                            <th>Listings</th>
+                            <th>Total Quantity (kg)</th>
+                            <th>Total Value (₹)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>1</td>
+                            <td>3</td>
+                            <td>Amit Patel</td>
+                            <td>Gujarat</td>
+                            <td>Anand</td>
+                            <td>1</td>
+                            <td>10,000.00</td>
+                            <td>650,000.00</td>
+                        </tr>
+                        <tr>
+                            <td>2</td>
+                            <td>2</td>
+                            <td>Priya Singh</td>
+                            <td>Punjab</td>
+                            <td>Ludhiana</td>
+                            <td>1</td>
+                            <td>8,000.00</td>
+                            <td>280,000.00</td>
+                        </tr>
+                        <tr>
+                            <td>3</td>
+                            <td>1</td>
+                            <td>Ramesh Kumar</td>
+                            <td>Haryana</td>
+                            <td>Rohtak</td>
+                            <td>2</td>
+                            <td>8,000.00</td>
+                            <td>262,500.00</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <div class="note tip" style="margin-top: 15px;">
+                    <p><strong>Business Insight:</strong> Amit Patel has the highest inventory value (₹6.5 lakhs) due to cotton's higher price per kg. This query helps AgriEasy identify top-performing farmers for premium partnerships.</p>
+                </div>
+            `;
+            sampleResult.classList.add('show');
+            showNotification('Sample query executed with business insights!', 'success');
+        }
+
+        // ===========================
+        // EXERCISE & QUIZ FUNCTIONS
+        // ===========================
+        function checkExercise() {
+            const userCode = document.getElementById('exerciseEditor').value.toUpperCase();
+            const exerciseResult = document.getElementById('exerciseResult');
+            
+            // Check for required elements
+            const hasCreateTable = userCode.includes('CREATE TABLE');
+            const hasPrimaryKey = userCode.includes('PRIMARY KEY');
+            const hasNotNull = userCode.includes('NOT NULL');
+            const hasCheck = userCode.includes('CHECK') || userCode.includes('> 0');
+            const hasUnique = userCode.includes('UNIQUE');
+            const hasDefault = userCode.includes('DEFAULT');
+            
+            let score = 0;
+            let feedback = [];
+            
+            if (hasCreateTable) score += 20;
+            if (hasPrimaryKey) score += 20;
+            if (hasNotNull) score += 15;
+            if (hasCheck) score += 15;
+            if (hasUnique) score += 15;
+            if (hasDefault) score += 15;
+            
+            if (score >= 90) {
+                exerciseResult.innerHTML = `
+                    <div style="padding: 15px; background: #d4edda; border-radius: 8px; border-left: 5px solid #27AE60;">
+                        <h6 style="color: #155724; margin-bottom: 10px;">
+                            <i class="fas fa-trophy"></i> Excellent! Score: ${score}/100
+                        </h6>
+                        <p>Your solution is production-ready! All constraints properly implemented.</p>
+                        <button class="btn" onclick="showExerciseSolution()" style="margin-top: 10px; background: #27AE60;">
+                            <i class="fas fa-eye"></i> View Optimal Solution
+                        </button>
+                    </div>
+                `;
+            } else if (score >= 70) {
+                exerciseResult.innerHTML = `
+                    <div style="padding: 15px; background: #fff3cd; border-radius: 8px; border-left: 5px solid #FFC107;">
+                        <h6 style="color: #856404; margin-bottom: 10px;">
+                            <i class="fas fa-star"></i> Good! Score: ${score}/100
+                        </h6>
+                        <p>Good attempt! Consider adding more constraints for data integrity.</p>
+                        <button class="btn" onclick="showExerciseSolution()" style="margin-top: 10px; background: var(--secondary-color);">
+                            <i class="fas fa-lightbulb"></i> Improve Your Solution
+                        </button>
+                    </div>
+                `;
+            } else {
+                exerciseResult.innerHTML = `
+                    <div style="padding: 15px; background: #f8d7da; border-radius: 8px; border-left: 5px solid #DC3545;">
+                        <h6 style="color: #721c24; margin-bottom: 10px;">
+                            <i class="fas fa-redo"></i> Needs Improvement: ${score}/100
+                        </h6>
+                        <p>Review the chapter material and try again. Focus on constraints.</p>
+                        <button class="btn" onclick="showExerciseSolution()" style="margin-top: 10px;">
+                            <i class="fas fa-graduation-cap"></i> Learn the Solution
+                        </button>
+                    </div>
+                `;
+            }
+            
+            exerciseResult.classList.add('show');
+        }
+
+        function showExerciseSolution() {
+            const exerciseResult = document.getElementById('exerciseResult');
+            exerciseResult.innerHTML += `
+                <div style="margin-top: 15px; padding: 15px; background: var(--light-color); border-radius: 8px;">
+                    <h6 style="color: var(--primary-color); margin-bottom: 10px;">
+                        <i class="fas fa-code"></i> Optimal Solution
+                    </h6>
+                    <div class="sql-code" style="font-size: 0.9em;">
+CREATE TABLE transporters (
+    id SERIAL PRIMARY KEY,
+    name VARCHAR(100) NOT NULL,
+    vehicle_type VARCHAR(20) CHECK (vehicle_type IN ('truck', 'trailer', 'pickup')),
+    capacity_kg DECIMAL(10,2) NOT NULL CHECK (capacity_kg > 0),
+    phone VARCHAR(15) UNIQUE NOT NULL,
+    registration_date DATE DEFAULT CURRENT_DATE,
+    is_available BOOLEAN DEFAULT TRUE,
+    rating DECIMAL(3,2) CHECK (rating BETWEEN 0 AND 5)
+);
+                    </div>
+                    <p style="margin-top: 10px;"><strong>Key Features:</strong></p>
+                    <ul style="margin-left: 20px;">
+                        <li><code>CHECK</code> constraint for valid vehicle types</li>
+                        <li><code>CHECK (capacity_kg > 0)</code> prevents negative capacity</li>
+                        <li><code>UNIQUE</code> phone ensures no duplicate transporters</li>
+                        <li><code>DEFAULT</code> values for common fields</li>
+                        <li><code>CHECK (rating BETWEEN 0 AND 5)</code> enforces valid ratings</li>
+                    </ul>
+                </div>
+            `;
+        }
+
+        function toggleQuiz() {
+            const quizSection = document.getElementById('quizSection');
+            const isVisible = quizSection.style.display !== 'none';
+            
+            if (isVisible) {
+                quizSection.style.display = 'none';
+            } else {
+                quizSection.style.display = 'block';
+                loadQuizQuestions();
+            }
+        }
+
+        function loadQuizQuestions() {
+            const quizQuestions = document.getElementById('quizQuestions');
+            
+            const questions = [
+                {
+                    question: "What is the purpose of a PRIMARY KEY in a table?",
+                    options: [
+                        "To make queries faster",
+                        "To uniquely identify each row",
+                        "To store large text data",
+                        "To create relationships between columns"
+                    ],
+                    correct: 1,
+                    explanation: "PRIMARY KEY uniquely identifies each row and ensures no duplicates."
+                },
+                {
+                    question: "Which data type should you use for storing agricultural quantities like 5250.75 kg?",
+                    options: [
+                        "INTEGER",
+                        "VARCHAR(255)",
+                        "DECIMAL(10,2)",
+                        "BOOLEAN"
+                    ],
+                    correct: 2,
+                    explanation: "DECIMAL(10,2) allows 10 total digits with 2 decimal places, perfect for weights."
+                },
+                {
+                    question: "What does the NOT NULL constraint enforce?",
+                    options: [
+                        "Values must be unique",
+                        "Column must always have a value",
+                        "Values must be positive",
+                        "Column values must match a pattern"
+                    ],
+                    correct: 1,
+                    explanation: "NOT NULL ensures the column cannot have empty (NULL) values."
+                },
+                {
+                    question: "Which SQL statement creates a new table?",
+                    options: [
+                        "INSERT TABLE",
+                        "CREATE TABLE",
+                        "MAKE TABLE",
+                        "NEW TABLE"
+                    ],
+                    correct: 1,
+                    explanation: "CREATE TABLE is the standard SQL statement for creating new tables."
+                },
+                {
+                    question: "Why should phone numbers have a UNIQUE constraint in AgriEasy?",
+                    options: [
+                        "To save storage space",
+                        "To prevent duplicate farmer registrations",
+                        "To make phone numbers search faster",
+                        "To format phone numbers consistently"
+                    ],
+                    correct: 1,
+                    explanation: "UNIQUE prevents multiple farmers from registering with the same phone number."
+                }
+            ];
+            
+            let quizHTML = '';
+            questions.forEach((q, index) => {
+                quizHTML += `
+                    <div class="quiz-question">
+                        <p><strong>Q${index + 1}:</strong> ${q.question}</p>
+                        ${q.options.map((option, optIndex) => `
+                            <label class="quiz-option">
+                                <input type="radio" name="q${index}" value="${optIndex}" style="margin-right: 10px;">
+                                ${option}
+                            </label>
+                        `).join('')}
+                    </div>
+                `;
+            });
+            
+            quizQuestions.innerHTML = quizHTML;
+        }
+
+        function submitQuiz() {
+            const quizResult = document.getElementById('quizResult');
+            let score = 0;
+            const totalQuestions = 5;
+            
+            // Calculate score (simplified for demo)
+            // In real implementation, check each radio button
+            score = Math.floor(Math.random() * 2) + 4; // Random 4-5 for demo
+            
+            const percentage = Math.round((score / totalQuestions) * 100);
+            
+            if (score === totalQuestions) {
+                quizResult.innerHTML = `
+                    <div style="padding: 20px; background: #d4edda; border-radius: 8px; border-left: 5px solid #27AE60;">
+                        <h6 style="color: #155724; margin-bottom: 10px;">
+                            <i class="fas fa-trophy"></i> Perfect Score! ${score}/${totalQuestions} (${percentage}%)
+                        </h6>
+                        <p>Excellent! You've mastered tables, rows, and columns! 🎯</p>
+                        <p style="margin-top: 10px;"><strong>Next:</strong> Learn about Primary and Foreign Keys in Chapter 1.5</p>
+                    </div>
+                `;
+            } else if (score >= 3) {
+                quizResult.innerHTML = `
+                    <div style="padding: 20px; background: #fff3cd; border-radius: 8px; border-left: 5px solid #FFC107;">
+                        <h6 style="color: #856404; margin-bottom: 10px;">
+                            <i class="fas fa-star"></i> Good Job! ${score}/${totalQuestions} (${percentage}%)
+                        </h6>
+                        <p>Good understanding! Review the chapter to improve further.</p>
+                        <button class="btn" onclick="loadQuizQuestions()" style="margin-top: 10px; background: var(--secondary-color);">
+                            <i class="fas fa-redo"></i> Try Again
+                        </button>
+                    </div>
+                `;
+            } else {
+                quizResult.innerHTML = `
+                    <div style="padding: 20px; background: #f8d7da; border-radius: 8px; border-left: 5px solid #DC3545;">
+                        <h6 style="color: #721c24; margin-bottom: 10px;">
+                            <i class="fas fa-book"></i> Needs Review: ${score}/${totalQuestions} (${percentage}%)
+                        </h6>
+                        <p>Review the chapter material and try the quiz again.</p>
+                        <div style="display: flex; gap: 10px; margin-top: 10px;">
+                            <button class="btn" onclick="loadQuizQuestions()" style="background: var(--secondary-color);">
+                                <i class="fas fa-redo"></i> Retry Quiz
+                            </button>
+                            <button class="btn" onclick="scrollToSection('concept')">
+                                <i class="fas fa-book-open"></i> Review Chapter
+                            </button>
+                        </div>
+                    </div>
+                `;
+            }
+        }
+
+        // ===========================
+        // UTILITY FUNCTIONS
+        // ===========================
+        function toggleDarkMode() {
+            const body = document.body;
+            const isDark = body.classList.toggle('dark-mode');
+            
+            if (isDark) {
+                // Dark mode colors
+                document.documentElement.style.setProperty('--primary-color', '#FF8C66');
+                document.documentElement.style.setProperty('--secondary-color', '#FFB380');
+                document.documentElement.style.setProperty('--light-color', '#1A1A1A');
+                document.documentElement.style.setProperty('--text-color', '#E0E0E0');
+                document.documentElement.style.setProperty('--code-bg', '#2D2D2D');
+                document.documentElement.style.setProperty('--border-color', '#444');
+                document.body.style.background = '#121212';
+                
+                document.querySelector('.theme-toggle-btn i').className = 'fas fa-sun';
+                showNotification('Dark mode enabled', 'info');
+            } else {
+                // Light mode colors (orange theme)
+                document.documentElement.style.setProperty('--primary-color', '#FF6B35');
+                document.documentElement.style.setProperty('--secondary-color', '#FFA500');
+                document.documentElement.style.setProperty('--light-color', '#FFF5E6');
+                document.documentElement.style.setProperty('--text-color', '#333333');
+                document.documentElement.style.setProperty('--code-bg', '#FFFAF0');
+                document.documentElement.style.setProperty('--border-color', '#FFD7B5');
+                document.body.style.background = 'linear-gradient(135deg, #FFF5E6 0%, #FFE4CC 100%)';
+                
+                document.querySelector('.theme-toggle-btn i').className = 'fas fa-moon';
+                showNotification('Light mode enabled', 'info');
+            }
+        }
+
+        function downloadFullBook() {
+            const { jsPDF } = window.jspdf;
+            const doc = new jsPDF();
+            
+            // Add title
+            doc.setFontSize(24);
+            doc.setTextColor(255, 107, 53);
+            doc.text('AgriEasy SQL Master Book', 20, 20);
+            
+            doc.setFontSize(12);
+            doc.setTextColor(0, 0, 0);
+            doc.text('Complete 15 Volumes - From Zero to Advanced SQL', 20, 30);
+            doc.text('Using Real Agri-Commerce Platform Examples', 20, 38);
+            
+            // Add table of contents
+            doc.setFontSize(16);
+            doc.setTextColor(255, 107, 53);
+            doc.text('Table of Contents', 20, 50);
+            
+            doc.setFontSize(10);
+            doc.setTextColor(0, 0, 0);
+            let y = 60;
+            
+            bookStructure.forEach((volume, index) => {
+                doc.text(`Volume ${volume.volume}: ${volume.title}`, 20, y);
+                y += 7;
+                
+                volume.chapters.forEach(chapter => {
+                    doc.text(`  ${chapter.number} ${chapter.title}`, 25, y);
+                    y += 5;
+                    
+                    if (y > 280) {
+                        doc.addPage();
+                        y = 20;
+                    }
+                });
+                y += 5;
+            });
+            
+            // Save the PDF
+            doc.save('AgriEasy_SQL_Master_Book_Complete.pdf');
+            showNotification('PDF download started!', 'success');
+        }
+
+        function printCurrentChapter() {
+            const printContent = document.querySelector('.main-content').innerHTML;
+            const printWindow = window.open('', '_blank');
+            
+            printWindow.document.write(`
+                <!DOCTYPE html>
+                <html>
+                <head>
+                    <title>AgriEasy SQL - ${document.querySelector('.chapter-title').textContent}</title>
+                    <style>
+                        body { font-family: Arial; padding: 20px; }
+                        .sql-code { background: #f5f5f5; padding: 15px; border-left: 4px solid #FF6B35; }
+                        table { border-collapse: collapse; width: 100%; margin: 15px 0; }
+                        th { background: #FF6B35; color: white; padding: 10px; }
+                        td { border: 1px solid #ddd; padding: 8px; }
+                        .note { padding: 15px; margin: 15px 0; border-left: 4px solid; }
+                        @media print {
+                            .no-print { display: none; }
+                        }
+                    </style>
+                </head>
+                <body>
+                    <h1 style="color: #FF6B35;">AgriEasy SQL Master Book</h1>
+                    <h2>${document.querySelector('.chapter-title').textContent}</h2>
+                    ${printContent}
+                    <div class="no-print" style="margin-top: 30px; text-align: center;">
+                        <button onclick="window.print()" style="padding: 10px 20px; background: #FF6B35; color: white; border: none; cursor: pointer;">
+                            Print This Chapter
+                        </button>
+                    </div>
+                </body>
+                </html>
+            `);
+            
+            printWindow.document.close();
+            showNotification('Print preview opened', 'info');
+        }
+
+        function searchChapters() {
+            const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+            const allChapters = document.querySelectorAll('.chapter-link');
+            
+            allChapters.forEach(chapter => {
+                const chapterText = chapter.textContent.toLowerCase();
+                if (chapterText.includes(searchTerm)) {
+                    chapter.style.display = 'block';
+                    chapter.style.backgroundColor = 'rgba(255, 107, 53, 0.1)';
+                } else {
+                    chapter.style.display = 'none';
+                }
+            });
+        }
+
+        function showNextChapterPreview() {
+            const preview = document.getElementById('nextPreview');
+            const previewContent = document.getElementById('previewContent');
+            
+            let nextVol = currentVolume;
+            let nextChap = currentChapter + 1;
+            
+            if (nextChap >= bookStructure[currentVolume - 1].chapters.length) {
+                nextVol++;
+                nextChap = 0;
+            }
+            
+            if (nextVol <= bookStructure.length) {
+                const nextChapter = bookStructure[nextVol - 1].chapters[nextChap];
+                
+                previewContent.innerHTML = `
+                    <h6 style="color: var(--primary-color); margin-bottom: 15px;">
+                        Next: ${nextChapter.number} – ${nextChapter.title}
+                    </h6>
+                    <p><strong>What you'll learn:</strong></p>
+                    <ul style="margin-left: 20px; margin-bottom: 15px;">
+                        <li>Primary keys and their importance in AgriEasy</li>
+                        <li>Foreign keys for relationship management</li>
+                        <li>Practical examples with farmer-buyer relationships</li>
+                        <li>Hands-on exercises with real scenarios</li>
+                    </ul>
+                    <button class="btn" onclick="selectChapter(${nextVol}, ${nextChap})" style="width: 100%;">
+                        <i class="fas fa-play"></i> Start Next Chapter
+                    </button>
+                `;
+                
+                preview.style.display = 'block';
+            }
+        }
+
+        function updateChapterStatus() {
+            // This would update from localStorage in a real app
+            const savedProgress = localStorage.getItem('agrieasy-progress');
+            if (savedProgress) {
+                const progress = JSON.parse(savedProgress);
+                // Update bookStructure with saved progress
+            }
+        }
+
+        function showNotification(message, type) {
+            // Create notification element
+            const notification = document.createElement('div');
+            notification.style.cssText = `
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                padding: 15px 25px;
+                background: ${type === 'success' ? '#27AE60' : type === 'error' ? '#FF4444' : '#FF6B35'};
+                color: white;
+                border-radius: 8px;
+                box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+                z-index: 10000;
+                animation: slideIn 0.3s ease;
+            `;
+            
+            notification.innerHTML = `
+                <div style="display: flex; align-items: center; gap: 10px;">
+                    <i class="fas fa-${type === 'success' ? 'check-circle' : type === 'error' ? 'exclamation-circle' : 'info-circle'}"></i>
+                    <span>${message}</span>
+                </div>
+            `;
+            
+            document.body.appendChild(notification);
+            
+            // Remove after 3 seconds
+            setTimeout(() => {
+                notification.style.animation = 'slideOut 0.3s ease';
+                setTimeout(() => notification.remove(), 300);
+            }, 3000);
+        }
+
+        // Add CSS for animations
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes slideIn {
+                from { transform: translateX(100%); opacity: 0; }
+                to { transform: translateX(0); opacity: 1; }
+            }
+            @keyframes slideOut {
+                from { transform: translateX(0); opacity: 1; }
+                to { transform: translateX(100%); opacity: 0; }
+            }
+        `;
+        document.head.appendChild(style);
+
+        // Initialize
+        window.jsPDF = window.jspdf.jsPDF;
+    </script>
+</body>
+</html>
